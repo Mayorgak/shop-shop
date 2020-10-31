@@ -12,13 +12,22 @@ import { QUERY_CHECKOUT } from "../../utils/queries";
 import { loadStripe } from "@stripe/stripe-js";
 
 
-  const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
+ 
 
 const Cart = () => {
 
 
-
+ const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
   const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
+
+  useEffect(() => {
+    if (data) {
+      stripePromise.then((res) => {
+        res.redirectToCheckout({ sessionId: data.checkout.session });
+      });
+    }
+  }, [data]);
+
 
     const [state, dispatch] = useStoreContext();
 
@@ -27,13 +36,7 @@ const Cart = () => {
     }
 
 
-    useEffect(() => {
-      if (data) {
-        stripePromise.then((res) => {
-          res.redirectToCheckout({ sessionId: data.checkout.session });
-        });
-      }
-    }, [data]);
+
 
 function calculateTotal() {
   let sum = 0;
@@ -44,6 +47,8 @@ function calculateTotal() {
 }
 
 function submitCheckout() {
+
+ 
   const productIds = [];
 
   state.cart.forEach((item) => {
@@ -57,8 +62,6 @@ function submitCheckout() {
    
   });
 }
-
-
 
 
     if (!state.cartOpen) {
