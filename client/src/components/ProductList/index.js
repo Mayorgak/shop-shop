@@ -19,6 +19,7 @@ function ProductList() {
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   useEffect(() => {
+    console.log("this is data", data)
     if (data) {
       dispatch({
         type: UPDATE_PRODUCTS,
@@ -36,7 +37,7 @@ function ProductList() {
       (product) => product.category._id === currentCategory
     );
   }
-
+  console.log("this is state", state)
   return (
     <div className="my-2">
       <h2>Our Products:</h2>
