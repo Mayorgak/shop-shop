@@ -13,15 +13,14 @@ import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from "../../utils/actions";
 import { QUERY_CHECKOUT } from "../../utils/queries";
 import { loadStripe } from "@stripe/stripe-js";
 
-
+ const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
  
 
 const Cart = () => {
 
- const stripePromise = loadStripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
+
   const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
     const [state, dispatch] = useStoreContext();
-
     
  useEffect(() => {
    async function getCart() {
@@ -35,7 +34,13 @@ const Cart = () => {
  }, [state.cart.length, dispatch]);
 
 
-
+useEffect(() => {
+  if (data) {
+    stripePromise.then((res) => {
+      res.redirectToCheckout({ sessionId: data.checkout.session });
+    });
+  }
+}, [data]);
 
     function toggleCart() {
       dispatch({ type: TOGGLE_CART });
@@ -77,6 +82,8 @@ function submitCheckout() {
         </div>
       );
     }
+
+    
 
     
 
