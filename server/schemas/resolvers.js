@@ -60,6 +60,7 @@ const resolvers = {
 
       return { token, user };
     },
+  },
     addOrder: async (parent, { products }, context) => {
       console.log(context);
       if (context.user) {
@@ -148,9 +149,9 @@ const resolvers = {
       });
 
       return { session: session.id };
-    // },
-    }
-  },
-};
+    },
+    };
+  
+
 
 module.exports = resolvers;
