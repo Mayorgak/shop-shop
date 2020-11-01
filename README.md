@@ -16,7 +16,7 @@ https://shop-shop01.herokuapp.com/
 
 ---
 
-
+![](https://github.com/Mayorgak/shop-shop/blob/main/client/public/images/readme.png)
 
 ---
 
