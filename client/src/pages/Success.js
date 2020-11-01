@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import Jumbotron from "../components/Jumbotron";
+import Jumbotron from "../components/Jumbotron/index";
 import { ADD_ORDER } from "../utils/mutations";
 import { idbPromise } from "../utils/helpers";
 
@@ -21,11 +21,18 @@ function Success() {
           productData.forEach((item) => {
             idbPromise("cart", "delete", item);
           });
+          //redirect after this is all done
+          setTimeout(() => {
+            window.location.assign("/");
+          }, 3000);
         }
     }
 
     saveOrder();
   }, [addOrder]);
+
+
+
   return (
     <div>
       <Jumbotron>
