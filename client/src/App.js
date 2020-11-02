@@ -14,8 +14,9 @@ import OrderHistory from "./pages/OrderHistory";
 import Success from "./pages/Success";
 
 //REDUX
-// import { Provider } from "react-redux";
-// import store from "./utils/store";
+import { Provider } from "react-redux";
+import store from "./utils/store";
+
 
 const client = new ApolloClient({
   request: (operation) => {
@@ -32,25 +33,27 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <div>
-          {/* <StoreProvider> */}
-          
-              <Nav />
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/signup" component={Signup} />
-                <Route exact path="/success" component={Success} />
-                <Route exact path="/orderHistory" component={OrderHistory} />
-                <Route exact path="/products/:id" component={Detail} />
+      <Provider store={store}>
+        <Router>
+          <div>
+            {/* <StoreProvider> */}
 
-                <Route component={NoMatch} />
-              </Switch>
-         
-          {/* </StoreProvider> */}
-        </div>
-      </Router>
+            <Nav />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={Signup} />
+              <Route exact path="/success" component={Success} />
+              <Route exact path="/orderHistory" component={OrderHistory} />
+              <Route exact path="/products/:id" component={Detail} />
+
+              <Route component={NoMatch} />
+            </Switch>
+
+            {/* </StoreProvider> */}
+          </div>
+        </Router>
+      </Provider>
     </ApolloProvider>
   );
 }

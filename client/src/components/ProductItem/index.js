@@ -2,38 +2,64 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { pluralize } from "../../utils/helpers";
 import { useStoreContext } from '../../utils/GlobalState';
-import { ADD_TO_CART, UPDATE_CART_QUANTITY } from '../../utils/actions';
+// import { ADD_TO_CART, UPDATE_CART_QUANTITY } from '../../utils/actions';
 
 
 import { idbPromise } from "../../utils/helpers";
 
+//REDUX IMPORTS
+import { useSelector, useDispatch } from 'react-redux';
+//REDUX ACTIONS
+import {
+  addToCart,
+  updateCartQuantity
+} from '../../actions';
+
+
 function ProductItem(item) {
   const { image, name, _id, price, quantity } = item;
 
-  const [state, dispatch] = useStoreContext();
-  
-const { cart } = state;
+  // const [state, dispatch] = useStoreContext();
 
-const addToCart = () => {
-  const itemInCart = cart.find((cartItem) => cartItem._id === _id);
-  if (itemInCart) {
-    dispatch({
-      type: UPDATE_CART_QUANTITY,
-      _id: _id,
-      purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
-    });
-    idbPromise("cart", "put", {
-      ...itemInCart,
-      purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
-    });
-  } else {
-    dispatch({
-      type: ADD_TO_CART,
-      product: { ...item, purchaseQuantity: 1 },
-    });
-    idbPromise("cart", "put", { ...item, purchaseQuantity: 1 });
-  }
-};
+  const commerceState = useSelector((state) => state.commerce);
+  //GET PIECE OF GLOBAL STATE
+  const { cart } = commerceState;
+
+  // const { cart } = state;
+
+  //REDUX DISPATCH FUNCTION
+  const dispatchREDUX = useDispatch();
+
+  const addToCart = () => {
+
+    const itemInCart = cart.find((cartItem) => cartItem._id === _id);
+    if (itemInCart) {
+      // dispatch({
+      //   type: UPDATE_CART_QUANTITY,
+      //   _id: _id,
+      //   purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
+      // });
+      //REDUX DISPATCH
+      dispatchREDUX(
+        updateCartQuantity(itemInCart, Number(itemInCart.purchaseQuantity) + 1)
+      );
+
+      idbPromise("cart", "put", {
+        ...itemInCart,
+        purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1,
+      });
+    } else {
+      // dispatch({
+      //   type: ADD_TO_CART,
+      //   product: { ...item, purchaseQuantity: 1 },
+      // });
+      //REDUX DISPATCH
+      const payload = { ...item, purchaseQuantity: 1 };
+      dispatchREDUX(addToCart(payload));
+
+      idbPromise("cart", "put", { ...item, purchaseQuantity: 1 });
+    }
+  };
 
   return (
     <div className="card px-1 py-1">

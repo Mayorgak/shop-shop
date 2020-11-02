@@ -34,6 +34,7 @@ const Cart = () => {
 
   const commerceState = useSelector((state) => state.commerce);
   const { cart, cartOpen } = commerceState;
+  const dispatchREDUX = useDispatch();
 
 useEffect(() => {
   async function getIDBCart() {
@@ -53,7 +54,6 @@ useEffect(() => {
 }, [cart.length, dispatchREDUX]);
 
 
-
   useEffect(() => {
     if (data) {
       stripePromise.then((res) => {
@@ -62,8 +62,7 @@ useEffect(() => {
     }
   }, [data]);
 
-  //REDUX DISPATCHER FUNCTION
-  const dispatchREDUX = useDispatch();
+  
 
   function toggleCart() {
        dispatchREDUX(toggleCart(cartOpen));

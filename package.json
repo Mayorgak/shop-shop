@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "if-env": "^1.0.4",
-    "mongoose": "^5.10.11"
+    "mongoose": "^5.10.11",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
