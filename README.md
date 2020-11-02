@@ -21,7 +21,10 @@ https://shop-shop01.herokuapp.com/
 ---
 
 
-## Dependencies 
+## Built with 
+* React 
+* Stripe 
+* Redux 
 
 
 __
